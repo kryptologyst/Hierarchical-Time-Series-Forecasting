@@ -1,0 +1,98 @@
+# Hierarchical Time Series Forecasting Configuration
+
+# Data generation parameters
+data:
+  seed: 42
+  periods: 60
+  start_date: "2020-01-01"
+  frequency: "M"  # Monthly
+  
+  # Hierarchy structure
+  hierarchy:
+    regions:
+      - name: "Region1"
+        base_value: 100
+        volatility: 5
+        trend: 0.02
+      - name: "Region2"
+        base_value: 120
+        volatility: 6
+        trend: 0.015
+      - name: "Region3"
+        base_value: 80
+        volatility: 4
+        trend: 0.025
+
+# Forecasting parameters
+forecasting:
+  horizon: 12
+  methods:
+    - "arima"
+    - "prophet"
+    - "lstm"
+  
+  # ARIMA parameters
+  arima:
+    order: [1, 1, 0]
+    seasonal_order: [0, 0, 0, 0]
+  
+  # Prophet parameters
+  prophet:
+    yearly_seasonality: true
+    weekly_seasonality: false
+    daily_seasonality: false
+    seasonality_mode: "additive"
+  
+  # LSTM parameters
+  lstm:
+    sequence_length: 12
+    hidden_size: 50
+    num_layers: 2
+    dropout: 0.2
+    epochs: 100
+    batch_size: 32
+    learning_rate: 0.001
+
+# Reconciliation methods
+reconciliation:
+  methods:
+    - "bottom_up"
+    - "top_down"
+    - "middle_out"
+    - "optimal"
+
+# Visualization settings
+visualization:
+  figure_size: [12, 8]
+  style: "seaborn-v0_8"
+  colors:
+    historical: "#1f77b4"
+    forecast: "#ff7f0e"
+    confidence: "#d3d3d3"
+  
+# Model evaluation
+evaluation:
+  metrics:
+    - "mae"
+    - "mse"
+    - "rmse"
+    - "mape"
+    - "smape"
+  
+  # Cross-validation
+  cv:
+    n_splits: 5
+    test_size: 0.2
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "logs/hts_forecasting.log"
+
+# Paths
+paths:
+  data_dir: "data"
+  models_dir: "models"
+  logs_dir: "logs"
+  plots_dir: "plots"
